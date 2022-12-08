@@ -1,0 +1,10 @@
+<template>
+    <div class="slds-item slds-var-m-around_xx-small" key={skill.Id} draggable="true" ondragstart={onDragStartFunction}
+        data-id={skill.Id}>
+        <lightning-pill label={skill.Name}>
+            <lightning-avatar src="https://www.lightningdesignsystem.com/assets/images/avatar2.jpg"
+                fallback-icon-name="standard:user" variant="circle" alternative-text="User avatar">
+            </lightning-avatar>
+        </lightning-pill>
+    </div>
+</template>

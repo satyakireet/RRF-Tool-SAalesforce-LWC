@@ -1,0 +1,104 @@
+<template>
+  <template if:true={newRrfDetails.data}>
+    <template if:true={iswizardflow}>
+      <lightning-layout class="slds-m-top_x-small" multiple-rows="true">
+        <lightning-layout-item size="12" small-device-size="6" medium-device-size="8" large-device-size="12">
+          <div class="slds-grid slds-p-around_x-small" style="background:#6f979e">
+            <div class="slds-col slds-size_3-of-12 slds-p-top_x-small">
+              <h1 class="lds-text-heading_small slds-text-color_inverse ">Name</h1>
+            </div>
+            <div class="slds-col slds-size_3-of-12 slds-p-top_x-small">
+              <h1 class="lds-text-heading_small slds-text-color_inverse" title="No Of Position">No Of Position</h1>
+            </div>
+            <div class="slds-col slds-size_3-of-12 slds-p-top_x-small">
+              <h1 class="lds-text-heading_small slds-text-color_inverse">Status</h1>
+            </div>
+            <div class="slds-col slds-size_3-of-12">
+              <h1 class="lds-text-heading_small slds-text-color_inverse">Action</h1>
+            </div>
+          </div>
+        </lightning-layout-item>
+        <template for:each={newRrfDetails.data.rrfSegments} for:item="segment">
+          <lightning-layout-item key={segment.Id} size="12" small-device-size="6" medium-device-size="8"
+            large-device-size="12">
+            <div class="slds-grid slds-p-around_x-small slds-m-bottom_x-small" style="background:#adc9ca">
+              <div class="slds-col slds-size_3-of-12 slds-p-top_x-small">
+                <h1 class="lds-text-heading_small slds-text-color_inverse ">{segment.Name__c}</h1>
+              </div>
+              <div class="slds-col slds-size_3-of-12 slds-p-top_x-small">
+                <h1 class="lds-text-heading_small slds-text-color_inverse" title="No Of Position">
+                  {segment.No_of_Position__c}</h1>
+              </div>
+              <div class="slds-col slds-size_3-of-12 slds-p-top_x-small">
+                <h1 class="lds-text-heading_small slds-text-color_inverse">{segment.Status__c}</h1>
+              </div>
+              <div class="slds-col slds-size_3-of-12">
+                <lightning-button-group>
+                  <lightning-button label="Complete" variant="inverse" data-id={segment.Id} onclick={handleButtonClick}
+                    disabled={isviewmode}></lightning-button>
+                  <lightning-button label="Hold" variant="inverse" data-id={segment.Id} onclick={handleButtonClick}
+                    disabled={isviewmode}></lightning-button>
+                </lightning-button-group>
+              </div>
+            </div>
+          </lightning-layout-item>
+        </template>
+      </lightning-layout>
+    </template>
+    <template for:each={newRrfDetails.data.librarySkills} for:item="library">
+      <lightning-layout key={library.librarySkill.Id}>
+        <lightning-layout-item size="12" small-device-size="4" medium-device-size="6" large-device-size="12">
+          <div class="slds-grid">
+            <div class="slds-col">
+              <div class="demo-only" style="padding:0.3rem;background:#16325c">
+                <h1 class="lds-text-heading_small slds-text-color_inverse">{library.librarySkill.Name}</h1>
+              </div>
+              <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered">
+                <thead>
+                  <tr class="slds-line-height_reset">
+                    <th class="" scope="col">
+                      <div class="slds-truncate" style="width: 12rem;" title="RRF Name">Skill Name</div>
+                    </th>
+                    <template for:each={newRrfDetails.data.rrfSegments} for:item="segment">
+                      <th class="" key={segment.Id} scope="col">
+                        <div class="slds-truncate" title={segment.Name__c}>{segment.Name__c}</div>
+                      </th>
+                    </template>
+                  </tr>
+                </thead>
+                <tbody>
+                  <template for:each={library.skills} for:item="skill">
+                    <tr class="slds-hint-parent" key={skill.Id}>
+                      <td data-label="RRF Name">
+                        <div class="slds-truncate" title={skill.Name}>{skill.Name}</div>
+                      </td>
+                      <template for:each={newRrfDetails.data.rrfSegments} for:item="segment">
+                        <td data-label="RRF Name" key={segment.Id}>
+                          <c-rrf_page-View-Chiled skslist={segment.Segment_Skill_Segregations__r} skill={skill}
+                            isviewmode={isviewmode} onupdatehandlercallback={handleUpdateHandlerCallback}>
+                          </c-rrf_page-View-Chiled>
+                          <!-- <div class="slds-truncate" title={segment.Name}>{segment.Name}</div> -->
+                        </td>
+
+                      </template>
+                    </tr>
+                  </template>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </lightning-layout-item>
+      </lightning-layout>
+    </template>
+  </template>
+  <template if:true={progressBar}>
+    <div class="slds-text-align_center">
+      <lightning-spinner alternative-text="Loading" size="large">Data Loading...</lightning-spinner>
+    </div>
+  </template>
+  <template if:false={newRrfDetails.data}>
+    <div class="slds-text-align_center">
+      <lightning-spinner alternative-text="Loading" size="large">Data Loading...</lightning-spinner>
+    </div>
+  </template>
+</template>

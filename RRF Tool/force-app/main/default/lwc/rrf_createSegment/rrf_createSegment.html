@@ -1,0 +1,86 @@
+<template>
+    <lightning-card>
+        <!-- <lightning-button onclick={createHandler} label="Save"></lightning-button> -->
+        <template if:true={rrfDetails.data}>
+            <div class="slds-text-align_center">
+                <template if:false={isError}>
+                    <p style="color: green;">You have used {usedNoOfPosition} out of {totalNoOfPos} positions</p>
+                </template>
+                <template if:true={isError}>
+                    <p style="color:red;">You have reached limit {usedNoOfPosition} out of {totalNoOfPos} positions</p>
+                </template>
+            </div>
+        </template>
+        <template for:each={segmentList} for:item="item" for:index="index">
+            <lightning-record-edit-form aria-autocomplete="false" key={item.id} class="segmentForm"
+                object-api-name="RRF_Segment__c">
+                <!-- <lightning-messages> </lightning-messages> -->
+                <lightning-layout multiple-rows>
+                    <lightning-layout-item size="12" small-device-size="4" medium-device-size="4" large-device-size="3"
+                        padding="around-small">
+                        <lightning-input-field class="" field-name="Name__c" variant="label-stacked" required>
+                        </lightning-input-field>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="12" small-device-size="4" medium-device-size="4" large-device-size="3"
+                        padding="around-small">
+                        <lightning-input-field class="" field-name="Role__c" variant="label-stacked" required>
+                        </lightning-input-field>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="12" small-device-size="4" medium-device-size="4" large-device-size="3"
+                        padding="around-small">
+                        <lightning-input-field class="noOfPosition" field-name="No_of_Position__c"
+                            variant="label-stacked" required>
+                        </lightning-input-field>
+                        <lightning-input-field field-name="RRF__c" value={rrfid} class="slds-hide">
+                        </lightning-input-field>
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="12" small-device-size="4" medium-device-size="4" large-device-size="3"
+                        padding="around-small">
+                        <div class="slds-p-top_medium">
+                            <lightning-icon icon-name="action:new" access-key={item.id} id={index}
+                                alternative-text="Add Row" size="small" title="Add Row" onclick={addRow}>
+                            </lightning-icon>
+                            <lightning-icon icon-name="action:delete" access-key={item.id} id={index}
+                                alternative-text="Delete Row" size="small" title="Delete Row" onclick={removeRow}>
+                            </lightning-icon>
+                        </div>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </lightning-record-edit-form>
+        </template>
+    </lightning-card>
+    <template if:true={isConfirmationBox}>
+        <div role="dialog" class="slds-modal slds-fade-in-open ">
+            <div class="slds-modal__container">
+                <!--Modal Box Header Start-->
+                <header class="slds-modal__header">
+                    <h1 class="slds-text-heading--medium">Confirmation</h1>
+                </header>
+                <!--Modal Box Header End-->
+
+                <!--Modal Box Content Start-->
+                <div class="slds-modal__content slds-p-around--medium slds-text-align_center">
+                    <b>You have remaining {avilableNoOfPosition} positions !! Still you want to continue ?</b>
+                </div>
+                <!--Modal Box Content End-->
+
+                <!--Modal Box Button Start-->
+                <footer class="slds-modal__footer">
+                    <lightning-button variant="brand-outline" name="No" label="No" onclick={handleConfirmDialogAction}></lightning-button>
+                    <lightning-button variant="brand" name="Yes" label="Yes" onclick={handleConfirmDialogAction} class="slds-m-left_x-small"></lightning-button>
+                </footer>
+                <!--Modal Box Button End-->
+            </div>
+        </div>
+        <div class="slds-backdrop slds-backdrop--open"></div>
+    </template>
+    <template if:true={isDataLoading}>
+        <div class="slds-text-align_center">
+            <lightning-spinner alternative-text="Loading" size="large">Data Loading...
+            </lightning-spinner>
+        </div>
+    </template>
+</template>

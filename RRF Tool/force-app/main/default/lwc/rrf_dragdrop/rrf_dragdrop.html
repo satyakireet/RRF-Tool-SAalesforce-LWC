@@ -1,0 +1,82 @@
+<template>
+    <div class="card_wrapper">
+        <template if:true={rrfDetails.data}>
+            <div class="slds-grid">
+                <div class="slds-col slds-size_6-of-12 slds-m-around_xx-small avskillDIV">
+                    <div class="projectContainer" style="max-width: 15vw;">
+                        <h1 class="column_heading">{availableSkillLibrary.Name}</h1>
+                        <!-- <c-rrf_dragdrop_list skills={allAvailableSkills.data} libraryskill={availableSkillLibrary}
+                            onlistitemdragevent={handleListItemDragEvent} onlistitemdropevent={handleListItemDropEvent}
+                            onrefreshapexevent={handleRefreshApexEvent}
+                            onconverteventfromcart={handleconverteventfromcart}>
+                        </c-rrf_dragdrop_list> -->
+                        <div class="availableSkillBodyContent">
+                            <template for:each={allAvailableSkills.data} for:item="skill">
+                                <div class="slds-item slds-var-m-around_xx-small" key={skill.Id} draggable="true"
+                                    ondragstart={onDragStartFunction} data-skillid={skill.Id}
+                                    data-skillname={skill.Name}>
+                                    <lightning-pill label={skill.Name}>
+                                        <lightning-avatar
+                                            src="https://www.lightningdesignsystem.com/assets/images/avatar2.jpg"
+                                            fallback-icon-name="standard:user" variant="circle"
+                                            alternative-text="User avatar">
+                                        </lightning-avatar>
+                                    </lightning-pill>
+                                </div>
+                                <!-- <c-rrf_dragdrop_card skill={skill} libraryskill={libraryskill}
+                                    key={skill.Id} oncarddragevent={handleDragEvent}
+                                    onrefreshapexevent={handleRefreshApexEvent}
+                                    onconverteventfromcart={handleconverteventfromcart}>
+                                </c-rrf_dragdrop_card> -->
+                            </template>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-col slds-size_6-of-12 slds-m-around_xx-small">
+                    <template for:each={rrfDetails.data.librarySkills} for:item="libraryskill" for:index="index">
+                        <div class="slds-grid" key={libraryskill.librarySkill.Id}>
+                            <div class="slds-col">
+                                <div class="projectContainer allskillDIV" data-index={index} style="max-width: 15vw;">
+                                    <h1 class="column_heading">{libraryskill.librarySkill.Name}</h1>
+                                    <div class="dropZone" ondrop={handleDropEvent} style="min-height: 8vh;"
+                                        ondragover={handleDragOver} data-lbsid={libraryskill.librarySkill.Id}
+                                        data-lbsname={libraryskill.librarySkill.Name}>
+                                        <template for:each={libraryskill.skills} for:item="skill">
+                                            <div class="slds-item slds-var-m-around_xx-small" key={skill.Id}>
+                                                <lightning-pill label={skill.Name} onremove={handleRemoveSkills}
+                                                    data-skillid={skill.Id}>
+                                                    <lightning-avatar
+                                                        src="https://www.lightningdesignsystem.com/assets/images/avatar2.jpg"
+                                                        fallback-icon-name="standard:user" variant="circle"
+                                                        alternative-text="User avatar">
+                                                    </lightning-avatar>
+                                                </lightning-pill>
+                                            </div>
+                                            <!-- <c-rrf_dragdrop_card skill={skill} libraryskill={libraryskill}
+                                                key={skill.Id} oncarddragevent={handleDragEvent}
+                                                onrefreshapexevent={handleRefreshApexEvent}
+                                                onconverteventfromcart={handleconverteventfromcart}> 
+                                            </c-rrf_dragdrop_card>-->
+                                        </template>
+                                    </div>
+                                    <!-- <c-rrf_dragdrop_list skills={libraryskill.skills}
+                                        libraryskill={libraryskill.librarySkill}
+                                        onlistitemdragevent={handleListItemDragEvent}
+                                        onlistitemdropevent={handleListItemDropEvent}
+                                        onrefreshapexevent={handleRefreshApexEvent}
+                                        onconverteventfromcart={handleconverteventfromcart}>
+                                    </c-rrf_dragdrop_list> -->
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </template>
+        <template if:false={rrfDetails.data}>
+            <div class="slds-text-align_center">
+                <lightning-spinner alternative-text="Loading" size="large">Data Loading...</lightning-spinner>
+            </div>
+        </template>
+    </div>
+</template>

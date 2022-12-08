@@ -1,0 +1,8 @@
+<template>
+    <div class="dropZone" ondrop={handleDropEvent} ondragover={handleDragOver}>
+    <template for:each={skills} for:item="skill">
+        <c-rrf_dragdrop_card skill={skill} libraryskill={libraryskill} key={skill.Id} oncarddragevent={handleDragEvent} onrefreshapexevent={handleRefreshApexEvent} onconverteventfromcart={handleconverteventfromcart}>
+            </c-rrf_dragdrop_card>
+    </template>
+    </div>
+</template>

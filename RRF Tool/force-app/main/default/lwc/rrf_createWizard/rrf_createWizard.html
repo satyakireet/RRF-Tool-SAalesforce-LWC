@@ -1,0 +1,98 @@
+<template>
+    <div class="slds-grid slds-theme_shade slds-var-m-around_small"
+        style="border-bottom: 3px solid #16325c;background-color: #6f979e">
+        <div class="slds-col slds-var-p-around_small slds-text-align_right">
+            <lightning-button variant="brand" label="New" title="New RRF" onclick={openModal}></lightning-button>
+        </div>
+    </div>
+    <template if:true={isModalShown}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+            aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- modal header -->
+                <header class="slds-modal__header"
+                    style="background-color: #FF855F;color: white;border-bottom: 3px solid #00c7b2;padding: 0.5rem;">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                        title="Close" onclick={closeModal}>
+                        <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                            size="small"></lightning-icon>
+                    </button>
+                    <h2 id="modal-heading-02" class="slds-text-heading_medium slds-hyphenate">RRF Tool</h2>
+                </header>
+                <!-- modal body -->
+                <!-- showing record edit form -->
+                <div class="slds-theme_default">
+                    <div class="slds-grid">
+                        <div class="slds-col">
+                            <c-wizard header="Create RRF Flow" variant="base-shaded" current-step="step-1"
+                                oncomplete={saveSegregation}>
+                                <c-wizard-step label="RRF Details" name="step-1" hide-next-button>
+                                    <div class="wizardBodyContent">
+                                        <lightning-record-edit-form id="RRF" record-id={rrfId} class="rrfForm"
+                                            object-api-name="RRF__c" onsuccess={handleSuccess}>
+                                            <lightning-messages>
+                                            </lightning-messages>
+                                            <lightning-input-field class="rrfFormField" field-name="Name">
+                                            </lightning-input-field>
+                                            <lightning-input-field class="rrfFormField" field-name="Client_Name__c">
+                                            </lightning-input-field>
+                                            <!-- <lightning-input-field class="rrfFormField" field-name="Role__c">
+                                            </lightning-input-field> -->
+                                            <lightning-input-field class="rrfFormField" field-name="Open_Positions__c">
+                                            </lightning-input-field>
+                                            <div class="slds-grid">
+                                                <div class="slds-col slds-size_6-of-12">
+                                                    <lightning-input-field class="rrfFormField"
+                                                        field-name="Start_Date__c">
+                                                    </lightning-input-field>
+                                                </div>
+                                                <div class="slds-col slds-size_6-of-12">
+                                                    <lightning-input-field class="rrfFormField"
+                                                        field-name="End_Date__c">
+                                                    </lightning-input-field>
+                                                </div>
+                                            </div>
+                                        </lightning-record-edit-form>
+                                    </div>
+                                    <lightning-button label="Next" variant="brand" slot="actions" onclick={saveRRF}>
+                                    </lightning-button>
+                                </c-wizard-step>
+                                <c-wizard-step label="Library Skills" name="step-2" hide-next-button>
+                                    <div class="wizardBodyContent">
+                                        <c-rrf_dragdrop rrfid={rrfId}></c-rrf_dragdrop>
+                                    </div>
+                                    <lightning-button label="Next" variant="brand" slot="actions"
+                                        onclick={saveLibrarySkills}>
+                                    </lightning-button>
+                                </c-wizard-step>
+                                <c-wizard-step label="Segment Creation" name="step-3" hide-next-button>
+                                    <div class="wizardBodyContent">
+                                        <c-rrf_create-Segment rrfid={rrfId}
+                                            onsavesegmentreturn={handlesavesegmentreturn}>
+                                        </c-rrf_create-Segment>
+                                    </div>
+                                    <lightning-button label="Next" variant="brand" slot="actions" onclick={saveSegment}>
+                                    </lightning-button>
+                                </c-wizard-step>
+                                <c-wizard-step label="Segment Segregation Creation" name="step-4">
+                                    <div class="wizardBodyContent">
+                                        <template if:true={isSegmentSaved}>
+                                            <c-rrf_page-View rrfid={rrfId} iswizardflow={iswizardflow}></c-rrf_page-View>
+                                        </template>
+                                    </div>
+                                </c-wizard-step>
+                                <template if:true={isDataLoading}>
+                                    <div class="slds-text-align_center">
+                                        <lightning-spinner alternative-text="Loading" size="large">Data Loading...
+                                        </lightning-spinner>
+                                    </div>
+                                </template>
+                            </c-wizard>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

@@ -1,0 +1,121 @@
+<template>
+    <lightning-card>
+
+        <c-rrf_create-Wizard onsavesegregation={handleSaveSegregation}></c-rrf_create-Wizard>
+
+        <template if:true={rrfDetails.data}>
+            <div class="slds-var-p-around_small">
+                <lightning-datatable class="slds-table_bordered" key-field="Id" hide-checkbox-column="true"
+                    show-row-number-column="true" data={rrfDetails.data} columns={AlltableColumns}
+                    onrowaction={handleRowAction} onsort={handleSortData} sorted-by={sortBy}
+                    sorted-direction={sortDirection}>
+                </lightning-datatable>
+            </div>
+        </template>
+        <template if:false={rrfDetails.data}>
+            <div class="slds-text-align_center">
+                <lightning-spinner alternative-text="Loading" size="large">Data Loading...</lightning-spinner>
+                <!-- <p style="color: red;">There are no RRF List available. </p> -->
+            </div>
+        </template>
+    </lightning-card>
+    <!-- Detail view modal -->
+    <template if:true={editViewModal}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+            aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <!-- modal header -->
+                <header class="slds-modal__header"
+                    style="background-color: #FF855F;color: white;border-bottom: 3px solid #00c7b2;padding: 0.5rem;">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                        title="Close" onclick={closeModal}>
+                        <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                            size="small"></lightning-icon>
+                    </button>
+                    <h2 id="modal-heading-02" class="slds-text-heading_medium slds-hyphenate">RRF Details</h2>
+                </header>
+                <!-- modal body -->
+                <!-- showing record edit form -->
+                <div class="slds-theme_default">
+                    <div class="slds-box slds-box_x-small editViewModalBodyContent">
+                        <lightning-layout>
+                            <lightning-layout-item size="12" small-device-size="6" medium-device-size="8"
+                                large-device-size="12">
+                                <div class="slds-m-top_xx-small slds-p-around_small" style="border: 1px solid #aba3a3;">
+                                    <h3 class="lds-text-heading_small">
+                                        <lightning-icon icon-name="standard:service_resource" variant="circle"
+                                            size="small">
+                                        </lightning-icon>
+                                        <span class="slds-m-left_small">RRF Details</span>
+                                    </h3>
+                                    <lightning-record-view-form density="comfy" record-id={currentRecordId}
+                                        object-api-name="RRF__c">
+                                        <div class="slds-grid slds-text-align_center">
+                                            <div class="slds-size_4-of-12">
+                                                <lightning-output-field field-name="Name">
+                                                </lightning-output-field>
+                                            </div>
+                                            <div class="slds-size_4-of-12">
+                                                <lightning-output-field field-name="Client_Name__c">
+                                                </lightning-output-field>
+                                            </div>
+                                            <div class="slds-size_4-of-12">
+                                                <lightning-output-field field-name="Open_Positions__c">
+                                                </lightning-output-field>
+                                            </div>
+                                        </div>
+                                    </lightning-record-view-form>
+                                </div>
+
+                                <div class="slds-m-top_x-small slds-theme_shade slds-theme_alert-texture">
+                                    <h3>
+                                        <lightning-icon icon-name="standard:segments" variant="circle" size="small">
+                                        </lightning-icon>
+                                        <span class="slds-m-left_small">RRF Segment Details</span>
+                                    </h3>
+                                    <div class="slds-grid slds-m-top_x-small">
+                                        <div class="slds-col">
+                                            <c-rrf_page-View rrfid={currentRecordId} isviewmode={isView} iswizardflow={iswizardflow}>
+                                            </c-rrf_page-View>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <div class="slds-grid slds-m-top_x-small">
+                                <div class="slds-col">
+                                    <lightning-button label="Print" onclick={printContent}></lightning-button>
+                                </div>
+                                </div> -->
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    <template if:true={isConfirmationBox}>
+        <div role="dialog" class="slds-modal slds-fade-in-open ">
+            <div class="slds-modal__container">
+                <!--Modal Box Header Start-->
+                <header class="slds-modal__header">
+                    <h1 class="slds-text-heading--medium">Confirmation</h1>
+                </header>
+                <!--Modal Box Header End-->
+                 
+                <!--Modal Box Content Start-->
+                <div class="slds-modal__content slds-p-around--medium slds-text-align_center">
+                    <b>Are you sure you want to delete this item?</b>
+                </div>
+                <!--Modal Box Content End-->
+                 
+                <!--Modal Box Button Start-->
+                <footer class="slds-modal__footer">
+                    <lightning-button variant="brand-outline" name="No" label="No" onclick={handleConfirmDialogAction}></lightning-button>
+                    <lightning-button variant="brand" name="Yes" label="Yes" onclick={handleConfirmDialogAction} class="slds-m-left_x-small"></lightning-button>
+                </footer>
+                <!--Modal Box Button End-->
+            </div>
+        </div>
+        <div class="slds-backdrop slds-backdrop--open"></div>
+    </template>
+</template>

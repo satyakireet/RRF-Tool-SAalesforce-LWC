@@ -1,0 +1,35 @@
+/* lightning-formatted-rich-text.userImage{
+    border-radius: 50%;
+    display:block;
+    margin: 0;
+    position: relative;
+    height: 24px;
+    width: 24px;
+    z-index: 0;
+    float: left;
+}  */
+.pipelineViewCardLift:hover {
+    outline: none;
+    box-shadow: var(--lwc-pipelineCardHoverShadow,0 1px 3px rgba(0, 0, 0, 0.3));
+    transform: var(--lwc-pipelineCardHoverTranslation,translateY(-2px));
+    transition: var(--lwc-pipelineCardHoverTransition,all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1));
+}
+.uiDraggable {
+    cursor: move;
+    -webkit-user-drag: element;
+}
+.customButton {
+    vertical-align: middle;
+    border: 1px solid rgb(221, 219, 218);
+    transition: border .15s linear;
+    background-color: #ff855f;
+    border: 1px solid #00c7b2;
+    color: rgb(255, 255, 255);
+    display: inline-flex;
+    border-radius:.25rem;
+    line-height: 1.6rem;
+    text-decoration: none;
+    white-space: normal;
+    user-select: none;
+    cursor: pointer;
+}
